@@ -1,4 +1,5 @@
 const canvasSketch = require('canvas-sketch');
+const random = require('canvas-sketch-util/random');
 
 const settings = {
   dimensions: [1080, 1080],
@@ -33,6 +34,8 @@ const sketch = () => {
       context.translate(x,y);
       context.translate(marginx, marginy);
       context.translate(cellw * 0.5, cellh * 0.5);
+
+      context.lineWidth =  4;
       //start the line drawing
       context.beginPath();
       context.moveTo(w * -0.5, 0);
