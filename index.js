@@ -3,10 +3,11 @@ const random = require('canvas-sketch-util/random');
 
 const settings = {
   dimensions: [1080, 1080],
+  animate: true,
 };
 
 const sketch = () => {
-  return ({ context, width, height }) => {
+  return ({ context, width, height, frame }) => {
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
 // these declarations set the size and dimensions within the grid
@@ -30,8 +31,9 @@ const sketch = () => {
       const w = cellw * 0.8;
       const h = cellh * 0.8;
       // add noise
-      const n = random.noise2D(x,y);
-      const angle = n * Math.PI;
+      const n = random.noise2D(x + frame * 10,y, 0.001);
+      const angle = n * Math.PI * 0.2;
+      const scale = (n + 1) / 2 * 30;
 
       //set position in cell
       context.save();
@@ -40,7 +42,7 @@ const sketch = () => {
       context.translate(cellw * 0.5, cellh * 0.5);
       context.rotate(angle);
 
-      context.lineWidth =  4;
+      context.lineWidth =  scale;
       //start the line drawing
       context.beginPath();
       context.moveTo(w * -0.5, 0);
