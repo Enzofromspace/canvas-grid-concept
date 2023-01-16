@@ -28,6 +28,19 @@ const sketch = () => {
       const y = row * cellh;
       const w = cellw * 0.8;
       const h = cellh * 0.8;
+      //set position in cell
+      context.save();
+      context.translate(x,y);
+      context.translate(marginx, marginy);
+      context.translate(cellw * 0.5, cellh * 0.5);
+      //start the line drawing
+      context.beginPath();
+      context.moveTo(w * -0.5, 0);
+      context.lineTo(w * 0.5, 0);
+      context.stroke();
+
+      context.restore();
+
     }
   };
 };
