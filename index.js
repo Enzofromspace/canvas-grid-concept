@@ -42,8 +42,8 @@ const sketch = () => {
       const w = cellw * 0.8;
       const h = cellh * 0.8;
       // add noise
-      const n = random.noise2D(x + frame * 10,y, 0.001);
-      const angle = n * Math.PI * 0.2;
+      const n = random.noise2D(x + frame * 10,y, params.freq);
+      const angle = n * Math.PI * params.amp;
       //const scale = (n + 1) / 2 * 30; option to scale without math util
       const scale = math.mapRange(n, -1, 1, params.scaleMin, params.scaleMax);
       //set position in cell
