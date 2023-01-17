@@ -15,11 +15,14 @@ const params = {
   scaleMax: 30,
   freq: 0.001,
   amp: 0.2,
+  frame: 0,
+  animate: true,
+  lineCap: 'butt',
 };
 
 const sketch = () => {
   return ({ context, width, height, frame }) => {
-    context.fillStyle = 'white';
+    context.fillStyle = 'orange';
     context.fillRect(0, 0, width, height);
 // these declarations set the size and dimensions within the grid
     const cols = params.cols;
@@ -36,14 +39,15 @@ const sketch = () => {
     for (let i = 0; i < numCells; i++){
       const col = i % cols;
       const row = Math.floor(i / cols);
-
+      
       const x = col * cellw;
       const y = row * cellh;
       const w = cellw * 0.8;
       const h = cellh * 0.8;
       // add noise
       //const n = random.noise2D(x + frame * 10,y, params.freq);
-      const n = random.noise3D(x, y, frame * 10, params.freq);
+      const f = params.animate ? frame : params.frame;
+      const n = random.noise3D(x, y, f * 10, params.freq);
 
       const angle = n * Math.PI * params.amp;
       //const scale = (n + 1) / 2 * 30; option to scale without math util
@@ -56,13 +60,16 @@ const sketch = () => {
       context.rotate(angle);
 
       context.lineWidth =  scale;
+      context.lineCap = params.lineCap;
       //start the line drawing
+      
       context.beginPath();
       context.moveTo(w * -0.5, 0);
       context.lineTo(w * 0.5, 0);
       context.stroke();
-
+      
       context.restore();
+  
     }
   };
 };
@@ -72,6 +79,7 @@ const createPane = () => {
   let folder;
 
   folder = pane.addFolder({title: 'grid'});
+  folder.addInput(params, 'lineCap', {options: {butt:'butt', round: 'round', square: 'square'}});
   folder.addInput(params, 'cols', {min: 2, max: 50, step: 1});
   folder.addInput(params, 'rows', {min: 2, max: 50, step: 1});
   folder.addInput(params, 'scaleMin', {min: 1, max: 100});
@@ -80,6 +88,8 @@ const createPane = () => {
   folder = pane.addFolder({title: 'Noise'});
   folder.addInput(params, 'freq', {min: -0.01, max: 0.01});
   folder.addInput(params, 'amp', {min: 0, max: 1});
+  folder.addInput(params, 'animate');
+  folder.addInput(params, 'frame', {min: 0, max: 999});
 };
 
 createPane();
