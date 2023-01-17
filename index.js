@@ -7,6 +7,11 @@ const settings = {
   dimensions: [1080, 1080],
   animate: true,
 };
+//adding code for tweakpane util
+const params = {
+  cols: 10,
+  rows: 10,
+};
 
 const sketch = () => {
   return ({ context, width, height, frame }) => {
@@ -58,6 +63,11 @@ const sketch = () => {
 
 const createPane = () => {
   const pane = new Tweakpane.Pane();
+  let folder;
+
+  folder = pane.addFolder({title: 'grid'});
+  folder.addInput(params, 'cols', {min: 2, max: 50, step: 1});
+  folder.addInput(params, 'rows', {min: 2, max: 50, step: 1});
 };
 
 createPane();
