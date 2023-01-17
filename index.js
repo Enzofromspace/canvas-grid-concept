@@ -1,6 +1,6 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
-//const math = require('canvas-sketch-util/math')
+const math = require('canvas-sketch-util/math')
 const Tweakpane = require('tweakpane');
 
 const settings = {
@@ -11,6 +11,10 @@ const settings = {
 const params = {
   cols: 10,
   rows: 10,
+  scaleMin: 1,
+  scaleMax: 30,
+  freq: 0.001,
+  amp: 0.2,
 };
 
 const sketch = () => {
@@ -18,8 +22,8 @@ const sketch = () => {
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
 // these declarations set the size and dimensions within the grid
-    const cols = 10;
-    const rows = 10;
+    const cols = params.cols;
+    const rows = params.rows;
     const numCells = cols * rows;
 
     const gridw = width * 0.8;
@@ -40,8 +44,8 @@ const sketch = () => {
       // add noise
       const n = random.noise2D(x + frame * 10,y, 0.001);
       const angle = n * Math.PI * 0.2;
-      const scale = (n + 1) / 2 * 30;
-
+      //const scale = (n + 1) / 2 * 30; option to scale without math util
+      const scale = math.mapRange(n, -1, 1, params.scaleMin, params.scaleMax);
       //set position in cell
       context.save();
       context.translate(x,y);
@@ -68,6 +72,12 @@ const createPane = () => {
   folder = pane.addFolder({title: 'grid'});
   folder.addInput(params, 'cols', {min: 2, max: 50, step: 1});
   folder.addInput(params, 'rows', {min: 2, max: 50, step: 1});
+  folder.addInput(params, 'scaleMin', {min: 1, max: 100});
+  folder.addInput(params, 'scaleMax', {min: 1, max: 100});
+
+  folder = pane.addFolder({title: 'Noise'});
+  folder.addInput(params, 'freq', {min: -0.01, max: 0.01});
+  folder.addInput(params, 'freq', {min: 0, max: 1});
 };
 
 createPane();
