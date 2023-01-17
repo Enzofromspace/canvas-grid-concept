@@ -1,5 +1,7 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
+//const math = require('canvas-sketch-util/math')
+const Tweakpane = require('tweakpane');
 
 const settings = {
   dimensions: [1080, 1080],
@@ -50,9 +52,13 @@ const sketch = () => {
       context.stroke();
 
       context.restore();
-
     }
   };
 };
 
+const createPane = () => {
+  const pane = new Tweakpane.Pane();
+};
+
+createPane();
 canvasSketch(sketch, settings);
